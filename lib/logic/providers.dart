@@ -1,6 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/models/transaction.dart';
+import '../data/models/bill.dart';
+import '../data/models/transaction_category.dart';
 import '../data/repositories/transaction_repository.dart';
+import '../data/repositories/bill_repository.dart';
+import '../data/repositories/category_repository.dart';
 
 // Repository Provider
 final transactionRepositoryProvider = Provider<TransactionRepository>((ref) {
@@ -74,3 +78,95 @@ final recentTransactionsProvider = Provider<List<Transaction>>((ref) {
   final transactions = ref.watch(transactionListProvider);
   return transactions.take(5).toList();
 });
+
+// Bill Repository Provider
+final billRepositoryProvider = Provider<BillRepository>((ref) {
+  return BillRepository();
+});
+
+// Bill List Provider
+final billListProvider = StateNotifierProvider<BillNotifier, List<Bill>>((ref) {
+  final repository = ref.watch(billRepositoryProvider);
+  return BillNotifier(repository);
+});
+
+class BillNotifier extends StateNotifier<List<Bill>> {
+  final BillRepository _repository;
+
+  BillNotifier(this._repository) : super([]) {
+    loadBills();
+  }
+
+  Future<void> loadBills() async {
+    final bills = await _repository.getBills();
+    state = bills;
+  }
+
+  Future<void> addBill(Bill bill) async {
+    await _repository.addBill(bill);
+    await loadBills();
+  }
+
+  Future<void> deleteBill(String id) async {
+    await _repository.deleteBill(id);
+    await loadBills();
+  }
+}
+
+// Category Repository Provider
+final categoryRepositoryProvider = Provider<CategoryRepository>((ref) {
+  return CategoryRepository();
+});
+
+// Category List Provider
+final categoryListProvider =
+    StateNotifierProvider<CategoryNotifier, List<TransactionCategory>>((ref) {
+  final repository = ref.watch(categoryRepositoryProvider);
+  return CategoryNotifier(repository);
+});
+
+class CategoryNotifier extends StateNotifier<List<TransactionCategory>> {
+  final CategoryRepository _repository;
+
+  CategoryNotifier(this._repository) : super([]) {
+    loadCategories();
+  }
+
+  Future<void> loadCategories() async {
+    final categories = await _repository.getCategories();
+    if (categories.isEmpty) {
+      await _seedDefaultCategories();
+    } else {
+      state = categories;
+    }
+  }
+
+  Future<void> _seedDefaultCategories() async {
+    final defaults = [
+      TransactionCategory(name: 'Food', isIncome: false, isDefault: true),
+      TransactionCategory(name: 'Travel', isIncome: false, isDefault: true),
+      TransactionCategory(
+          name: 'Entertainment', isIncome: false, isDefault: true),
+      TransactionCategory(name: 'Shopping', isIncome: false, isDefault: true),
+      TransactionCategory(
+          name: 'Pocket Money', isIncome: true, isDefault: true),
+      TransactionCategory(name: 'Gift', isIncome: true, isDefault: true),
+      TransactionCategory(name: 'Other', isIncome: false, isDefault: true),
+    ];
+
+    for (var cat in defaults) {
+      await _repository.addCategory(cat);
+    }
+    state = await _repository.getCategories();
+  }
+
+  Future<void> addCategory(TransactionCategory category) async {
+    await _repository.addCategory(category);
+    await loadCategories();
+  }
+
+  Future<void> deleteCategory(String id) async {
+    await _repository.deleteCategory(id);
+    await loadCategories();
+  }
+}

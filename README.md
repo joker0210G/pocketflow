@@ -1,20 +1,100 @@
-# 💸 PocketFlow
+# PocketFlow 💸
 
-A minimalist, vibrant financial tracking application designed for students to manage their pocket money with ease. PocketFlow simplifies personal finance by visualizing money in "buckets" (categories) and providing clear insights into spending habits.
+**PocketFlow** is a smart, modern financial tracker designed to tell you what's *actually* safe to spend. Unlike traditional apps that just show a balance, PocketFlow calculates your "Daily Spendable" allowance based on your remaining budget term and committed bills.
 
-![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)
-![Dart](https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white)
-![Riverpod](https://img.shields.io/badge/Riverpod-State%20Management-purple?style=for-the-badge)
-![Hive](https://img.shields.io/badge/Hive-Local%20Database-orange?style=for-the-badge)
+![App Icon](assets/images/my_logo.png)
 
-## ✨ Features
+## 🌟 Key Features
 
-- **💰 Transaction Tracking**: Easily log Income and Expenses.
-- **📊 Smart Dashboard**: View your Current Balance, Total Income, and Total Expenses at a glance.
-- **📂 Category Buckets**: Categorize spending into intuitive buckets like *Food, Travel, Entertainment, and more*.
-- **📈 Visual Analytics**: Beautiful Pie Charts to visualize where your money goes.
-- **⚡ Fast & Offline**: Built with **Hive** for instant, offline-first data persistence.
-- **🎨 Modern UI**: A clean, Material 3 design with vibrant colors and smooth interactions.
+### 🧠 In My Pocket (Unique Logic)
+Stop guessing. PocketFlow calculates your **Daily Spendable** amount by:
+1.  Taking your **Current Balance**.
+2.  Subtracting **Committed Bills** (Rent, Subscriptions, etc.).
+3.  Dividing by the **Days Remaining** in your term.
+
+### 🗓️ Flexible Terms
+Not everyone gets paid on the 1st.
+- **Fixed Income**: Set your payday (e.g., 25th of every month).
+- **Flexible / Freelance**: Set a custom term (e.g., "This money needs to last 14 days").
+- **One-Tap Refill**: Restart your term instantly when you get paid.
+
+### 🧾 Dedicated Bills Manager
+- Keep your committed money separate from your spending money.
+- Add recurring or one-off bills.
+- See your **Total Committed** amount at a glance.
+
+### 📊 Smart Dashboard
+- **Allowance Card**: See your daily limit and "Runway" (days left).
+- **Balance Card**: Quick view of total funds.
+- **Transaction List**: Clean history with income/expense indicators.
+- **Visual Stats**: Pie charts to analyze spending categories.
+- **Custom Categories**: Create, edit, and delete your own tags.
+- **Transaction Notes**: Add optional details to every expense.
+
+### 💾 Data & Backup (Universal)
+- **Cross-Platform**: Works seamlessly on Android, iOS, and **Web**.
+- **JSON Backup**: Deep copy for app migration with versioning.
+- **Restore**: Securely import backups with built-in schema validation.
+- **CSV Export**: Generate spreadsheet reports.
+- **Flexible Options**: Choose between "Share" (Email, Drive) or "Save to Device/Download".
+- **Organized Files**: Exports use readable timestamps (e.g., `pocketflow_backup_2023-11-23...`).
+
+### 🎨 Modern UI
+- **Responsive Layout**: Works on all screen sizes with smooth scrolling.
+- **Interactive Animations**: Custom sliding toggles and transitions.
+- **Haptic Feedback**: Satisfying tactile response for actions.
+- **Dark Mode**: Fully supported system-aware dark theme.
+- **Bottom Navigation**: Easy access to Home, Bills, Stats, and Settings.
+
+---
+
+## 🛠️ Technical Stack
+
+- **Framework**: Flutter (Dart)
+- **State Management**: Riverpod (v2)
+- **Local Database**: Hive (NoSQL, fast & offline-first)
+- **Architecture**: MVC / Layered (Data, Domain, Logic, UI)
+- **Charts**: fl_chart
+- **Icons**: flutter_launcher_icons
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Flutter SDK (3.0+)
+- Dart SDK
+
+### Installation
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/joker0210G/pocketflow.git
+    cd pocketflow
+    ```
+
+2.  **Install dependencies**:
+    ```bash
+    flutter pub get
+    ```
+
+3.  **Generate Adapters (Hive)**:
+    Required for database models (`Transaction`, `AppSettings`, `Bill`).
+    ```bash
+    dart run build_runner build --delete-conflicting-outputs
+    ```
+
+4.  **Run the App**:
+    ```bash
+    flutter run
+    ```
+
+### Generating App Icons
+To update the app icon, place your `my_logo.png` in `assets/images/` and run:
+```bash
+dart run flutter_launcher_icons
+```
+
+---
 
 ## 📱 Screenshots
 
@@ -24,68 +104,14 @@ A minimalist, vibrant financial tracking application designed for students to ma
 
 > *Note: Add your screenshots in a `docs/screenshots` folder or replace the links above.*
 
-## 🛠️ Tech Stack
-
-- **Framework**: [Flutter](https://flutter.dev/)
-- **Language**: [Dart](https://dart.dev/)
-- **State Management**: [Riverpod](https://riverpod.dev/) (Providers & StateNotifiers)
-- **Local Database**: [Hive](https://docs.hivedb.dev/) (NoSQL, fast key-value storage)
-- **Charting**: [fl_chart](https://pub.dev/packages/fl_chart)
-- **Utilities**:
-    - `google_fonts`: For modern typography (Poppins).
-    - `intl`: Date and Currency formatting.
-    - `uuid`: Unique IDs for transactions.
-
-## 🚀 Getting Started
-
-Follow these steps to set up the project locally.
-
-### Prerequisites
-- Flutter SDK installed ([Guide](https://docs.flutter.dev/get-started/install))
-- Git installed
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/pocketflow.git
-   cd pocketflow
-   ```
-
-2. **Install Dependencies**
-   ```bash
-   flutter pub get
-   ```
-
-3. **Run the App**
-   ```bash
-   flutter run
-   ```
-
-## 📂 Project Structure
-
-The project follows a **Feature-First / Layered Architecture** to ensure scalability and maintainability.
-
-```
-lib/
-├── core/            # Global constants, theme, and extensions
-├── data/            # Data layer (Models, Repositories, Hive setup)
-├── logic/           # Business logic (Riverpod Providers)
-├── ui/              # Presentation layer
-│   ├── screens/     # Full-page screens (Home, Stats)
-│   └── widgets/     # Reusable UI components (Cards, lists, sheets)
-└── main.dart        # Entry point and App setup
-```
-
 ## 🤝 Contributing
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
 
-Contributions are welcome! If you have any ideas or feature requests:
-
-1.  Fork the repository.
-2.  Create a new branch (`git checkout -b feature/AmazingFeature`).
-3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4.  Push to the branch (`git push origin feature/AmazingFeature`).
-5.  Open a Pull Request.
+---
 
 ## 📄 License
 

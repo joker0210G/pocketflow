@@ -48,4 +48,26 @@ class Transaction {
       isIncome: isIncome ?? this.isIncome,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'amount': amount,
+      'category': category,
+      'note': note,
+      'date': date.toIso8601String(),
+      'isIncome': isIncome,
+    };
+  }
+
+  factory Transaction.fromJson(Map<String, dynamic> json) {
+    return Transaction(
+      id: json['id'] as String,
+      amount: (json['amount'] as num).toDouble(),
+      category: json['category'] as String,
+      note: json['note'] as String?,
+      date: DateTime.parse(json['date'] as String),
+      isIncome: json['isIncome'] as bool,
+    );
+  }
 }
