@@ -4,6 +4,7 @@ import '../widgets/balance_card.dart';
 import '../widgets/transaction_list.dart';
 import '../widgets/add_transaction_sheet.dart';
 import 'stats_screen.dart';
+import 'settings_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -14,6 +15,15 @@ class HomeScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('PocketFlow'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.pie_chart),
             onPressed: () {

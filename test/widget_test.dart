@@ -6,6 +6,8 @@ import 'package:pocketflow/data/repositories/transaction_repository.dart';
 import 'package:pocketflow/logic/providers.dart';
 import 'package:pocketflow/main.dart';
 
+import 'package:pocketflow/logic/settings_provider.dart';
+
 // Manual Mock Repository
 class MockTransactionRepository implements TransactionRepository {
   @override
@@ -16,6 +18,20 @@ class MockTransactionRepository implements TransactionRepository {
 
   @override
   Future<void> deleteTransaction(String id) async {}
+
+  @override
+  Future<void> clearAll() async {}
+}
+
+class MockSettingsNotifier extends SettingsNotifier {
+  MockSettingsNotifier() : super(shouldLoad: false) {
+    state = ThemeMode.light;
+  }
+
+  @override
+  Future<void> setThemeMode(ThemeMode mode) async {
+    state = mode;
+  }
 }
 
 void main() {
@@ -27,6 +43,7 @@ void main() {
         overrides: [
           transactionRepositoryProvider
               .overrideWithValue(MockTransactionRepository()),
+          settingsProvider.overrideWith((ref) => MockSettingsNotifier()),
         ],
         child: const MainApp(),
       ),

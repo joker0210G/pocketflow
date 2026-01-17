@@ -27,4 +27,9 @@ class TransactionRepository {
     final box = await _getBox();
     return box.values.toList();
   }
+
+  Future<void> clearAll() async {
+    final box = await _getBox();
+    await box.clear();
+  }
 }
